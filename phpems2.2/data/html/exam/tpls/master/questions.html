@@ -1,0 +1,199 @@
+			<ul class="breadcrumb">
+				<li><a href="index.php?exam-master">考试模块</a> <span class="divider">/</span></li>
+				<li><a href="index.php?exam-master-questions">试题管理</a> <span class="divider">/</span></li>
+				<li class="active">普通试题管理</li>
+			</ul>
+			<ul class="nav nav-tabs">
+				<li class="active">
+					<a href="#">普通试题管理</a>
+				</li>
+				<li class="dropdown pull-right">
+					<a data-toggle="dropdown" class="dropdown-toggle" href="#">添加试题<strong class="caret"></strong></a>
+					<ul class="dropdown-menu">
+						<li><a href="index.php?exam-master-questions-addquestion&page=&search[questionid]=9835&search[stime]=&search[etime]=&search[keyword]=&search[questionsubjectid]=0&search[questionsectionid]=0&search[questionknowsid]=&search[username]=&search[questiontype]=0&search[questionlevel]=0&search[argsmodel]=1">单题添加</a></li>
+						<li><a href="index.php?exam-master-questions-bataddquestion&page=&search[questionid]=9835&search[stime]=&search[etime]=&search[keyword]=&search[questionsubjectid]=0&search[questionsectionid]=0&search[questionknowsid]=&search[username]=&search[questiontype]=0&search[questionlevel]=0&search[argsmodel]=1">批量添加</a></li>
+						<li><a href="index.php?exam-master-questions-filebataddquestion&page=&search[questionid]=9835&search[stime]=&search[etime]=&search[keyword]=&search[questionsubjectid]=0&search[questionsectionid]=0&search[questionknowsid]=&search[username]=&search[questiontype]=0&search[questionlevel]=0&search[argsmodel]=1">CSV导入</a></li>
+					</ul>
+				</li>
+			</ul>
+			<form action="index.php?exam-master-questions" method="post">
+				<table class="table">
+					<thead>
+		                <tr>
+					        <th colspan="2">搜索</th>
+					        <th></th>
+					        <th></th>
+					        <th></th>
+					        <th></th>
+		                </tr>
+		            </thead>
+					<tr>
+						<td>
+							试题ID：
+						</td>
+						<td>
+							<input name="search[questionid]" class="input-small" size="25" type="text" class="number" value="9835"/>
+						</td>
+						<td>
+							录入时间：
+						</td>
+						<td>
+							<input class="input-small datepicker" data-date="2015-03-12" data-date-format="yyyy-mm-dd" type="text" name="search[stime]" size="10" id="stime" value=""/> - <input class="input-small datepicker" data-date="2015-03-12" data-date-format="yyyy-mm-dd" size="10" type="text" name="search[etime]" id="etime" value=""/>
+						</td>
+						<td>
+							关键字：
+						</td>
+						<td>
+							<input class="input-small" name="search[keyword]" size="25" type="text" value=""/>
+						</td>
+					</tr>
+			        <tr>
+						<td>
+							科目：
+						</td>
+						<td>
+			        		<select name="search[questionsubjectid]" class="combox input-medium" target="sectionselect" refUrl="?exam-master-questions-ajax-getsectionsbysubjectid&subjectid={value}">
+				        		<option value="0">选择科目</option>
+						  								  		<option value="1">近代史</option>
+						  								  		<option value="2">科普常识</option>
+						  								  		<option value="3">测试科目</option>
+						  								  		<option value="4">操作系统</option>
+						  							  		</select>
+			        	</td>
+			        	<td>
+							章节：
+						</td>
+						<td>
+					  		<select name="search[questionsectionid]" class="combox input-medium" id="sectionselect" target="knowsselect" refUrl="?exam-master-questions-ajax-getknowsbysectionid&sectionid={value}">
+					  		<option value="0">选择章节</option>
+					  							  		</select>
+			        	</td>
+			        	<td>
+							知识点：
+						</td>
+						<td>
+					  		<select name="search[questionknowsid]" id="knowsselect" class="input-medium">
+						  		<option value="">选择知识点</option>
+						  							  		</select>
+			        	</td>
+					</tr>
+					<tr>
+						<td>
+							录入人：
+						</td>
+			        	<td>
+			        		<input class="input-small" name="search[username]" size="25" type="text" value=""/>
+			        	</td>
+			        	<td>
+							试题类型：
+						</td>
+						<td>
+							<select name="search[questiontype]" class="input-medium">
+						  		<option value="0">类型不限</option>
+						  								  		<option value="1">单选题</option>
+						  								  		<option value="2">多选题</option>
+						  								  		<option value="3">判断题</option>
+						  								  		<option value="4">问答题</option>
+						  								  		<option value="5">填空题</option>
+						  							  		</select>
+						</td>
+						<td>
+							难度：
+						</td>
+						<td>
+							<select name="search[questionlevel]" class="input-medium">
+						  		<option value="0">难度不限</option>
+								<option value="1">易</option>
+								<option value="2">中</option>
+								<option value="3">难</option>
+					  		</select>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<button class="btn btn-primary" type="submit">搜索</button>
+							<input type="hidden" value="1" name="search[argsmodel]" />
+						</td>
+						<td colspan="4"></td>
+					</tr>
+				</table>
+			</form>
+			<form action="index.php?exam-master-questions-batdel" method="post">
+				<fieldset>
+					<table class="table table-hover">
+			            <thead>
+			                <tr>
+			                    <th><input type="checkbox" class="checkall" target="delids"/></th>
+			                    <th>ID</th>
+						        <th>试题类型</th>
+						        <th>试题内容</th>
+						        <th>录入人</th>
+						        <th>录入时间</th>
+						        <th>难度</th>
+						        <th>操作</th>
+			                </tr>
+			            </thead>
+			            <tbody>
+		                    					        <tr>
+								<td><input type="checkbox" name="delids[9835]" value="1"></td>
+								<td>
+									9835								</td>
+								<td>
+									单选题								</td>
+								<td>
+									<a title="查看试题" class="selfmodal" href="javascript:;" url="index.php?exam-master-questions-detail&questionid=9835" data-target="#modal">你是否认同我说的话 ?</a>
+								</td>
+								<td>
+																	</td>
+								<td>
+									2015-03-12								</td>
+								<td>
+									易								</td>
+								<td>
+									<div class="btn-group">
+			                    		<a class="btn" href="index.php?exam-master-questions-modifyquestion&page=&questionid=9835&search[questionid]=9835&search[stime]=&search[etime]=&search[keyword]=&search[questionsubjectid]=0&search[questionsectionid]=0&search[questionknowsid]=&search[username]=&search[questiontype]=0&search[questionlevel]=0&search[argsmodel]=1" title="修改"><em class="icon-edit"></em></a>
+										<a class="btn confirm" href="index.php?exam-master-questions-delquestion&questionparent=0&page=&questionid=9835&search[questionid]=9835&search[stime]=&search[etime]=&search[keyword]=&search[questionsubjectid]=0&search[questionsectionid]=0&search[questionknowsid]=&search[username]=&search[questiontype]=0&search[questionlevel]=0&search[argsmodel]=1" title="删除"><em class="icon-remove"></em></a>
+			                    	</div>
+								</td>
+					        </tr>
+					        			        	</tbody>
+			        </table>
+			        <div class="control-group">
+			            <div class="controls">
+				            <label class="radio inline">
+				                <input type="radio" name="action" value="delete" checked/>删除
+				            </label>
+				            				            <input type="hidden" name="search[questionid]" value="9835"/>
+				            				            <input type="hidden" name="search[stime]" value=""/>
+				            				            <input type="hidden" name="search[etime]" value=""/>
+				            				            <input type="hidden" name="search[keyword]" value=""/>
+				            				            <input type="hidden" name="search[questionsubjectid]" value="0"/>
+				            				            <input type="hidden" name="search[questionsectionid]" value="0"/>
+				            				            <input type="hidden" name="search[questionknowsid]" value=""/>
+				            				            <input type="hidden" name="search[username]" value=""/>
+				            				            <input type="hidden" name="search[questiontype]" value="0"/>
+				            				            <input type="hidden" name="search[questionlevel]" value="0"/>
+				            				            <input type="hidden" name="search[argsmodel]" value="1"/>
+				            				            <label class="radio inline">
+				            	<button class="btn btn-primary" type="submit">提交</button>
+				            </label>
+				            <input type="hidden" name="page" value=""/>
+				        </div>
+			        </div>
+			        <div class="pagination pagination-right">
+			            <ul></ul>
+			        </div>
+		        </fieldset>
+			</form>
+	        <div aria-hidden="true" id="modal" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel">
+				<div class="modal-header">
+					<button aria-hidden="true" class="close" type="button" data-dismiss="modal">×</button>
+					<h3 id="myModalLabel">
+						试题详情
+					</h3>
+				</div>
+				<div class="modal-body"></div>
+				<div class="modal-footer">
+					 <button aria-hidden="true" class="btn" data-dismiss="modal">关闭</button>
+				</div>
+			</div>

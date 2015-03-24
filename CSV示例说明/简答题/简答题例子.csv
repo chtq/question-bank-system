@@ -1,0 +1,191 @@
+4,"<p><b>问题描述</b></p>
+  	<p>设自行车生产线上有一只箱子，其中有N 个位置( N ≥3)，每个位置可存放一个车架或一个车轮; 又设有三个工人，其活动分别为:</p>
+  	<table border='1' >
+  		<tr>
+  			<td>
+  				工人1活动: </br>
+  				do{</br>
+  					加工一个车架;</br>
+  					车架放入箱中;</br>
+  				}while(1)</br>
+  			</td>
+  			<td>
+  				工人2活动：</br>
+  				do{</br>
+  					加工一个车轮;</br>
+  					车轮放入箱中;</br>
+  				}while(1)</br>
+  			</td>
+  			<td>
+  				工人1活动：</br>
+  				do{</br>
+  					箱中取一个车架;</br>
+  					箱中取两个车轮;</br>
+  					组装为一台车;</br>
+  				}while(1)</br>
+  			</td>
+  		</tr>
+  	</table>
+  	<p>试分别用信号灯与PV 操作实现三个工人的合作，要求解中不含死锁。</p>",,,"<p><b>问题分析：</p></b>
+  	<p>用信号灯与PV 操作实现三个工人的合作首先不考虑死锁问题，工人1与工人3、工
+人2与工人3构成生产者与消费者关系，这两对生产/消费关系通过共同的缓冲区相联
+系。从资源的角度来看，箱字中的空位置相当于工人1和工人2的资源，而车架和车轮相
+当于工人3的资源。定义三个信号灯如下：</p>
+	<p>---------------The P,V code Using Pascal--------------------</p>
+	<p>
+	semaphore empty=N;</br>
+	semaphore wheel=0;</br>
+	semaphore frame=0;</br>
+	三位工人的活动分别为:</br>
+	
+	  	<table border='1' >
+  		<tr>
+  			<td>
+  				procedure 工人1: </br>
+  				do{</br>
+  					加工一个车架;</br>
+  					P(empty); 
+  					车架放入箱中;</br>
+  					V(frame);
+  				}while(1)</br>
+  			</td>
+  			<td>
+  				工人2活动：</br>
+  				do{</br>
+  					加工一个车轮;</br>
+  					P(empty); 
+  					车轮放入箱中;</br>
+  					V(wheel);
+  				}while(1)</br>
+  			</td>
+  			<td>
+  				工人1活动：</br>
+  				do{</br>
+					P(frame);
+  					箱中取一个车架;</br>
+					V(empty);
+					P(wheel);
+					P(wheel);
+  					箱中取两个车轮;</br>
+  					V(empty);
+					V(empty);
+  					组装为一台车;</br>
+  				}while(1)</br>
+  			</td>
+  		</tr>
+  	</table>
+  	
+  	<p>分析上述解法易见，当工人1推进速度较快时，箱中空位置可能完全被车架占满或只留
+有一个存放车轮的位置，而当此时工人3同时取2个车轮时将无法得到，而工人2又无法
+将新加工的车轮放入箱中；当工人2推进速度较快时，箱中空位置可能完全被车轮占满，
+而当此时工人3同取车架时将无法得到，而工人1又无法将新加工的车架放入箱中。上述
+两种情况都意味着死锁。为防止死锁的发生，箱中车架的数量不可超过N-2，车轮的数
+量不可超过N-1，这些限制可以用两个信号灯来表达。如此，可以给出不含死锁的完整
+解法如下：</p>
+
+		<p>---------------The P,V code Using Pascal--------------------</p>
+		semaphore s1=N-2;</br>
+		semaphore s2=N-1;</br>
+		<table border='1' >
+  		<tr>
+  			<td>
+  				procedure 工人1: </br>
+  				do{</br>
+  					加工一个车架;</br>
+  					P(s1); </br>
+  					P(empty); </br>
+  					车架放入箱中;</br>
+  					V(frame);</br>
+  				}while(1)</br>
+  			</td>
+  			<td>
+  				工人2活动：</br>
+  				do{</br>
+  					加工一个车轮;</br>
+  					P(s2); </br>
+  					P(empty); </br>
+  					车轮放入箱中;</br>
+  					V(wheel);</br>
+  				}while(1)</br>
+  			</td>
+  			<td>
+  				工人1活动：</br>
+  				do{</br>
+					P(frame);</br>
+  					箱中取一个车架;</br>
+					V(empty);</br>
+					V(s1);</br>
+					P(wheel);</br>
+					P(wheel);</br>
+  					箱中取两个车轮;</br>
+  					V(empty);</br>
+					V(empty);</br>
+					V(s2);</br>
+					V(s2);</br>
+  					组装为一台车;</br>
+  				}while(1)</br>
+  			</td>
+  		</tr>
+  	</table>
+
+	<p>详细描述还应考虑对箱子单元的描述以及访问互斥问题。建议车架放在箱子的一端，车
+轮放在箱子的另一端，车架与车轮都采用后进先出的管理方式。</P>
+	<p>---------------The P,V code Using Pascal--------------------</p>
+	Semaphore s1=N-2，s2=N-1，mutex=1;</br>
+	int in1=0，in2=N-1;</br>
+	int buf[N];</br>
+		<table border='1' >
+  		<tr>
+  			<td>
+  				procedure 工人1: </br>
+  				do{</br>
+  					加工一个车架;</br>
+  					P(s1); </br>
+  					P(empty);</br>
+  					P(mutex);  </br>
+  					Buf[in1] = 车架;</br>
+  					in1 = in1 + 1;</br>
+  					V(mutex);</br>
+  					V(frame);</br>
+  				}while(1)</br>
+  			</td>
+  			<td>
+  				工人2活动：</br>
+  				do{</br>
+  					加工一个车轮;</br>
+  					P(s2); </br>
+  					P(empty); </br>
+  					P(mutex);</br>
+  					Buf[in2] = 车轮;</br>
+  					in2 = in2 - 1;</br>
+  					V(mutex);</br>
+  					V(wheel);</br>
+  				}while(1)</br>
+  			</td>
+  			<td>
+  				工人1活动：</br>
+  				do{</br>
+					P(frame);</br>
+					P(mutex);</br>
+					Temp1 = Buf[in1-1];</br>
+					in1 = in1 - 1;</br>
+					V(mutex);</br>
+					V(empty);</br>
+					V(s1);</br>
+					P(wheel);</br>
+					P(wheel);</br>
+					P(mutex);</br>
+					Temp2 = Buf[in2+1];</br>
+					in2 = in2 + 1;</br>
+					Temp3 = Buf[in2 + 1];</br>
+					in2 = in2 + 1;</br>
+					V(mutex);</br>
+  					V(empty);</br>
+					V(empty);</br>
+					V(s2);</br>
+					V(s2);</br>
+  					组装为一台车;</br>
+  				}while(1)</br>
+  			</td>
+  		</tr>
+  	</table>",,"16,18",3

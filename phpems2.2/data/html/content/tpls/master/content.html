@@ -1,0 +1,137 @@
+			<ul class="breadcrumb">
+				<li><a href="index.php?content-master">内容模块</a> <span class="divider">/</span></li>
+								<li class="active">内容管理</li>
+							</ul>
+			<ul class="nav nav-tabs">
+				<li class="active">
+					<a href="#">内容管理</a>
+				</li>
+				<li class="dropdown pull-right">
+					<a data-toggle="dropdown" class="dropdown-toggle" href="#">添加内容<strong class="caret"></strong></a>
+					<ul class="dropdown-menu">
+						<li><a href="index.php?content-master-contents-add&catid=&page=1">添加内容</a></li>
+						<li><a href="index.php?content-master-contents&catid=&page=1">上级分类</a></li>
+					</ul>
+				</li>
+			</ul>
+			<h4>所有内容</h4>
+			<form action="index.php?content-master-contents" method="post">
+				<table class="table">
+			        <tr>
+						<td>
+							内容ID：
+						</td>
+						<td>
+							<input name="search[contentid]" class="input-small" size="25" type="text" class="number" value=""/>
+						</td>
+						<td>
+							录入时间：
+						</td>
+						<td>
+							<input class="input-small datepicker" data-date="2015-03-11" data-date-format="yyyy-mm-dd" type="text" name="search[stime]" size="10" id="stime" value=""/> - <input class="input-small datepicker" data-date="2015-03-11" data-date-format="yyyy-mm-dd" size="10" type="text" name="search[etime]" id="etime" value=""/>
+						</td>
+						<td>
+							关键字：
+						</td>
+						<td>
+							<input class="input-small" name="search[keyword]" size="25" type="text" value=""/>
+						</td>
+					</tr>
+			        <tr>
+						<td>
+							录入人：
+						</td>
+			        	<td>
+			        		<input class="input-small" name="search[username]" size="25" type="text" value=""/>
+			        	</td>
+			        	<td>
+							内容模型：
+						</td>
+						<td>
+							<select name="search[contentmoduleid]" class="input-medium">
+						  		<option value="0">不限</option>
+						  								  		<option value="13">图片库</option>
+						  								  		<option value="5">产品</option>
+						  								  		<option value="4">新闻</option>
+						  							  		</select>
+						</td>
+						<td>
+							<button class="btn btn-primary" type="submit">提交</button>
+						</td>
+						<td></td>
+			        </tr>
+			        <tr>
+						<td>
+							分类：
+						</td>
+						<td colspan="5">
+					  		<div class="form-inline control-group">
+						  		<select msg="您必须选择一个分类" class="autocombox input-medium" name="search[contentcatid]" refUrl="index.php?content-master-category-ajax-getchildcategory&catid={value}">
+					            	<option value="">选择一级分类</option>
+					            						            </select>
+				            </div>
+			        	</td>
+					</tr>
+				</table>
+				<div class="input">
+					<input type="hidden" value="1" name="search[argsmodel]" />
+				</div>
+			</form>
+			<form action="index.php?content-master-contents-lite" method="post">
+				<fieldset>
+					<table class="table table-hover">
+			            <thead>
+			                <tr>
+			                    <th><input type="checkbox" class="checkall" target="delids"/></th>
+			                    <th>权重</th>
+			                    <th>ID</th>
+			                    <th>缩略图</th>
+						        <th>标题</th>
+						        <th>分类</th>
+						        <th>发布时间</th>
+						        <th>操作</th>
+			                </tr>
+			            </thead>
+			            <tbody>
+			            				        	</tbody>
+			        </table>
+			        <div class="control-group">
+			            <div class="controls">
+				            <label class="radio inline">
+				                <input type="radio" name="action" value="modify" checked/>排序
+				            </label>
+				            <!--
+				            <label class="radio inline">
+				                <input type="radio" name="action" value="moveposition" />推荐
+				            </label>
+				            -->
+				            <label class="radio inline">
+				                <input type="radio" name="action" value="copycategory"/>复制
+				            </label>
+				            <label class="radio inline">
+				                <input type="radio" name="action" value="movecategory" />移动
+				            </label>
+				            <label class="radio inline">
+				                <input type="radio" name="action" value="delete" />删除
+				            </label>
+				            				            <input type="hidden" name="search[contentid]" value=""/>
+				            				            <input type="hidden" name="search[stime]" value=""/>
+				            				            <input type="hidden" name="search[etime]" value=""/>
+				            				            <input type="hidden" name="search[keyword]" value=""/>
+				            				            <input type="hidden" name="search[username]" value=""/>
+				            				            <input type="hidden" name="search[contentmoduleid]" value="0"/>
+				            				            <input type="hidden" name="search[contentcatid]" value=""/>
+				            				            <input type="hidden" name="search[argsmodel]" value="1"/>
+				            				            <label class="radio inline">
+				            	<button class="btn btn-primary" type="submit">提交</button>
+				            </label>
+				            <input type="hidden" name="modifycontentsequence" value="1"/>
+				            <input type="hidden" name="catid" value=""/>
+				            <input type="hidden" name="page" value="1"/>
+				        </div>
+			        </div>
+					<div class="pagination pagination-right">
+						<ul></ul>
+					</div>
+				</fieldset>
+			</form>
