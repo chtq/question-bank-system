@@ -25,7 +25,7 @@ http://phpems.net/2014/
 7. 知识点我已在http://os.cs.tsinghua.edu.cn/oscourse/OsMooc2014#head-d9b0a2239439b6205bb11de3d55e8c3ca9cdc12f标明. 请注意划分知识点和难度.
 
 # [示例] 
-见文件夹 ``/CSV示例说明 ``
+见文件夹 `/CSV示例说明 `
 
 # 备份与恢复
 * 将题库导出为sql文件
